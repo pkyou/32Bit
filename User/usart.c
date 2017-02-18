@@ -1,6 +1,5 @@
 #include "usart.h"
 #include "config.h"
-
 #ifdef __GNUC__
   /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
      set to 'Yes') calls __io_putchar() */
@@ -10,18 +9,18 @@
 #endif /* __GNUC__ */
 
 /*设置是否使用硬件流控制*/
-//#define HwFlowControl
-void InitUsart(void)
-{
-	  USART_InitStructure.USART_BaudRate = 115200;
+	void Usart_Init(void)
+	{
+		USART_InitTypeDef USART_InitStructure;
+		USART_InitStructure.USART_BaudRate = 115200;
   USART_InitStructure.USART_WordLength = USART_WordLength_8b;
   USART_InitStructure.USART_StopBits = USART_StopBits_1;
   USART_InitStructure.USART_Parity = USART_Parity_No;
   USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
-  STM_EVAL_COMInit(COM1, &USART_InitStructure);
-}
+	}
+//#define HwFlowControl
 /*******************************************************************************
 * Function Name  : USART_Configuration
 * Description    : Configure Open_USARTx 
@@ -43,10 +42,7 @@ void USART_Configuration(void)
 
   GPIO_PinAFConfig(Open_USARTx_TX_GPIO_PORT, Open_USARTx_TX_SOURCE, Open_USARTx_TX_AF);
   GPIO_PinAFConfig(Open_USARTx_RX_GPIO_PORT, Open_USARTx_RX_SOURCE, Open_USARTx_RX_AF);
-
-  /*
-  *  Open_USARTx_TX -> PA9 , Open_USARTx_RX -PA10
-  */
+	
   GPIO_InitStructure.GPIO_Pin = Open_USARTx_TX_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;

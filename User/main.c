@@ -41,8 +41,10 @@ int main(void)
 	OpenDio();
 	GPIO_SetBits(GPIOA,GPIO_Pin_6);
 	GPIO_ResetBits(GPIOC,GPIO_Pin_4);
-
- 
+USART_Configuration();
+	USART_NVIC_Config();
+	//InitUsart();
+ USART_SendData(USART3,12);
 	/* Infinite loop */
 	while (1)
 	{

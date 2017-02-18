@@ -144,14 +144,14 @@
 	#define Open_USARTx_CLK                    	RCC_APB1Periph_USART3
 	
 	#define Open_USARTx_TX_PIN                 	GPIO_Pin_10
-	#define Open_USARTx_TX_GPIO_PORT           	GPIOC
+	#define Open_USARTx_TX_GPIO_PORT           	GPIOB  //PB10
 	#define Open_USARTx_TX_GPIO_CLK            	RCC_AHB1Periph_GPIOC
 	#define Open_USARTx_TX_SOURCE              	GPIO_PinSource10
 	#define Open_USARTx_TX_AF                  	GPIO_AF_USART3
 	
 	
 	#define Open_USARTx_RX_PIN                 	GPIO_Pin_11
-	#define Open_USARTx_RX_GPIO_PORT           	GPIOC
+	#define Open_USARTx_RX_GPIO_PORT           	GPIOB //PB11
 	#define Open_USARTx_RX_GPIO_CLK            	RCC_AHB1Periph_GPIOC
 	#define Open_USARTx_RX_SOURCE              	GPIO_PinSource11
 	#define Open_USARTx_RX_AF                  	GPIO_AF_USART3

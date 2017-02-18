@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F4XX, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\Libraries\CMSIS\Include;..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\common</IncludePath>
+              <IncludePath>..\User;..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\Libraries\CMSIS\Include;..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\common;..\Libraries\STM3240_41_G_EVAL</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -425,8 +425,8 @@
             </File>
             <File>
               <FileName>usart.c</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\usart.c</FilePath>
+              <FileType>1</FileType>
+              <FilePath>..\User\usart.c</FilePath>
             </File>
           </Files>
         </Group>

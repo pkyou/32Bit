@@ -1,4 +1,4 @@
-.\output\usart.o: ..\common\usart.c
+.\output\usart.o: ..\User\usart.c
 .\output\usart.o: ..\common\usart.h
 .\output\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\output\usart.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h

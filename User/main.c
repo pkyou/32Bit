@@ -26,7 +26,7 @@
 #include <string.h>
 #include <stdio.h>
 
-
+unsigned char RS485_tx_buffer[200] = {0,0,0,0,0,0,0,0};
 /* Private function prototypes -----------------------------------------------*/
 void  Delay(uint32_t nCount);
 
@@ -41,10 +41,19 @@ int main(void)
 	OpenDio();
 	GPIO_SetBits(GPIOA,GPIO_Pin_6);
 	GPIO_ResetBits(GPIOC,GPIO_Pin_4);
-USART_Configuration();
-	USART_NVIC_Config();
-	//InitUsart();
- USART_SendData(USART3,12);
+  USART_Configuration();
+//USART_NVIC_Config();
+	
+	Usart2_Init();
+	
+	
+	
+	//GPIO_SetBits(GPIOA,GPIO_Pin_8); 
+
+GPIO_SetBits(GPIOA,GPIO_Pin_15); 	
+	
+  USART_SendData(USART2,12);
+	printf("***************************************************\r\n");
 	/* Infinite loop */
 	while (1)
 	{

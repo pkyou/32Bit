@@ -9,17 +9,6 @@
 #endif /* __GNUC__ */
 
 /*设置是否使用硬件流控制*/
-	void Usart_Init(void)
-	{
-		USART_InitTypeDef USART_InitStructure;
-		USART_InitStructure.USART_BaudRate = 115200;
-  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-  USART_InitStructure.USART_StopBits = USART_StopBits_1;
-  USART_InitStructure.USART_Parity = USART_Parity_No;
-  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-
-	}
 //#define HwFlowControl
 /*******************************************************************************
 * Function Name  : USART_Configuration
@@ -29,6 +18,53 @@
 * Return         : None
 * Attention		 : None
 *******************************************************************************/
+	
+	
+	//TX PA2  RX  PA3
+	void Usart2_Init(void)
+	{
+		GPIO_InitTypeDef GPIO_InitStructure;
+		USART_InitTypeDef USART_InitStructure; 
+		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE);
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);
+		
+		//TX PA2
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
+	//RX PA3
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
+		
+		
+  GPIO_InitStructure.GPIO_Pin = GPIO_PinSource2;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
+		
+	GPIO_InitStructure.GPIO_Pin = GPIO_PinSource3;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	USART_InitStructure.USART_BaudRate = 115200;
+  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+  USART_InitStructure.USART_StopBits = USART_StopBits_1;
+  USART_InitStructure.USART_Parity = USART_Parity_No;
+	
+	
+	
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+  
+  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+  USART_Init(USART2, &USART_InitStructure);
+  /* Enable the Open_USART Transmit interrupt: this interrupt is generated when the 
+     Open_USARTx transmit data register is empty */
+		 
+  //USART_ITConfig(USART2,USART_IT_RXNE,ENABLE);
+	
+
+  USART_Cmd(USART2, ENABLE);
+	}
+	
 void USART_Configuration(void)
 { 												
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -39,22 +75,24 @@ void USART_Configuration(void)
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3,ENABLE);
  
-
-  GPIO_PinAFConfig(Open_USARTx_TX_GPIO_PORT, Open_USARTx_TX_SOURCE, Open_USARTx_TX_AF);
-  GPIO_PinAFConfig(Open_USARTx_RX_GPIO_PORT, Open_USARTx_RX_SOURCE, Open_USARTx_RX_AF);
+//TX PB10
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_USART3);
+	//RX PB11
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF_USART3);
 	
-  GPIO_InitStructure.GPIO_Pin = Open_USARTx_TX_PIN;
+  GPIO_InitStructure.GPIO_Pin = GPIO_PinSource10;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_Init(Open_USARTx_TX_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 
-  GPIO_InitStructure.GPIO_Pin = Open_USARTx_RX_PIN;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(Open_USARTx_RX_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_PinSource11;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+//  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+ // GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
 
   #if defined HwFlowControl && !defined OpenUART4 && !defined OpenUART5 
   	RCC_AHB1PeriphClockCmd(Open_USARTx_RTS_GPIO_CLK,ENABLE);
@@ -76,6 +114,10 @@ void USART_Configuration(void)
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(Open_USARTx_CTS_GPIO_PORT, &GPIO_InitStructure);
   #endif
+	
+	
+	
+	
 /*
    		 USARTx configured as follow:
          - BaudRate = 115200 baud  
@@ -96,18 +138,19 @@ void USART_Configuration(void)
 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
   #endif
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-  USART_Init(Open_USARTx, &USART_InitStructure);
+  USART_Init(USART3, &USART_InitStructure);
   /* Enable the Open_USART Transmit interrupt: this interrupt is generated when the 
      Open_USARTx transmit data register is empty */
-  USART_ITConfig(Open_USARTx,USART_IT_RXNE,ENABLE);
+  USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
+	
 
-  USART_Cmd(Open_USARTx, ENABLE);
+  USART_Cmd(USART3, ENABLE);
 
 }
 
 void USART_NVIC_Config(void)
 {
-  NVIC_InitTypeDef NVIC_InitStructure;
+  NVIC_InitTypeDef NVIC_InitStructure;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 
   /* Enable the USARTx Interrupt */
   NVIC_InitStructure.NVIC_IRQChannel = Open_USARTx_IRQn;

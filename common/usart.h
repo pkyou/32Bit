@@ -7,5 +7,5 @@
 
 void USART_Configuration(void);
 void USART_NVIC_Config(void);
- 
+ 	void Usart2_Init(void);
 #endif /*_USART_H*/

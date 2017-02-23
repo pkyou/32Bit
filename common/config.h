@@ -42,33 +42,33 @@
 //A(PB15)  B(PD9)  C(PD11)  D(PD13)  PRESS(PD15)
 #define  Open_JOYSTICK_A_CLK						RCC_AHB1Periph_GPIOC 
 #define  Open_JOYSTICK_A_PORT						GPIOC
-#define Open_GPIO_Pin_A              				GPIO_Pin_4
+#define  Open_GPIO_Pin_A              	GPIO_Pin_4
 
 #define  Open_JOYSTICK_B_CLK						RCC_AHB1Periph_GPIOC
 #define  Open_JOYSTICK_B_PORT						GPIOC
-#define Open_GPIO_Pin_B              				GPIO_Pin_5
+#define  Open_GPIO_Pin_B              	GPIO_Pin_5
 
 #define  Open_JOYSTICK_C_CLK						RCC_AHB1Periph_GPIOC
 #define  Open_JOYSTICK_C_PORT						GPIOC
-#define Open_GPIO_Pin_C              				GPIO_Pin_6
+#define  Open_GPIO_Pin_C              	GPIO_Pin_6
 
 
 #define  Open_JOYSTICK_D_CLK						RCC_AHB1Periph_GPIOC
 #define  Open_JOYSTICK_D_PORT						GPIOC  
-#define Open_GPIO_Pin_D              				GPIO_Pin_7
+#define  Open_GPIO_Pin_D              	GPIO_Pin_7
 
-#define  Open_JOYSTICK_PRESS_CLK						RCC_AHB1Periph_GPIOC
-#define  Open_JOYSTICK_PRESS_PORT						GPIOC
-#define Open_GPIO_Pin_PRESS              				GPIO_Pin_13
+#define  Open_JOYSTICK_PRESS_CLK				RCC_AHB1Periph_GPIOC
+#define  Open_JOYSTICK_PRESS_PORT			  GPIOC
+#define  Open_GPIO_Pin_PRESS            GPIO_Pin_13
 
 
 
-#define Open_USER_CLK								RCC_AHB1Periph_GPIOA    
-#define Open_USER_PORT								GPIOA
+#define Open_USER_CLK								    RCC_AHB1Periph_GPIOA    
+#define Open_USER_PORT								  GPIOA
 #define Open_GPIO_Pin_USER							GPIO_Pin_1
 
-#define Open_WAKEUP_CLK								RCC_AHB1Periph_GPIOA    
-#define Open_WAKEUP_PORT							GPIOA	
+#define Open_WAKEUP_CLK								  RCC_AHB1Periph_GPIOA    
+#define Open_WAKEUP_PORT							  GPIOA	
 #define Open_GPIO_Pin_WAKEUP						GPIO_Pin_0
 
 /*----------------------------------------------------*/

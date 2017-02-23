@@ -41,19 +41,22 @@ int main(void)
 	OpenDio();
 	GPIO_SetBits(GPIOA,GPIO_Pin_6);
 	GPIO_ResetBits(GPIOC,GPIO_Pin_4);
-  USART_Configuration();
+ // USART_Configuration();
 //USART_NVIC_Config();
 	
 	Usart2_Init();
 	
 	
-	
+	Delay(100);
 	//GPIO_SetBits(GPIOA,GPIO_Pin_8); 
 
-GPIO_SetBits(GPIOA,GPIO_Pin_15); 	
-	
-  USART_SendData(USART2,12);
-	printf("***************************************************\r\n");
+	GPIO_SetBits(GPIOA,GPIO_Pin_15); 	
+	Delay(100);
+  USART_SendData(USART2,6);
+	Delay(100);
+	while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET)
+  {}
+//	printf("***************************************************\r\n");
 	/* Infinite loop */
 	while (1)
 	{

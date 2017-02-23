@@ -43,6 +43,10 @@
 		
 	GPIO_InitStructure.GPIO_Pin = GPIO_PinSource3;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+		
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	USART_InitStructure.USART_BaudRate = 115200;
@@ -158,7 +162,6 @@ void USART_NVIC_Config(void)
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
-
 }
 
 /* Use no semihosting */

@@ -25,7 +25,7 @@
 #include "usart.h"
 #include <string.h>
 #include <stdio.h>
-
+uint16_t data=0;
 unsigned char RS485_tx_buffer[200] = {0,0,0,0,0,0,0,0};
 /* Private function prototypes -----------------------------------------------*/
 void  Delay(uint32_t nCount);
@@ -38,24 +38,34 @@ void  Delay(uint32_t nCount);
   */
 int main(void)
 {
-	OpenDio();
-	GPIO_SetBits(GPIOA,GPIO_Pin_6);
-	GPIO_ResetBits(GPIOC,GPIO_Pin_4);
+  OpenDio();
+	//GPIO_SetBits(GPIOA,GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_0|GPIO_Pin_4);
+	
+//	GPIO_SetBits(GPIOC,GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_12);
+//	GPIO_ResetBits(GPIOC,GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_12);
+//	GPIO_SetBits(GPIOC,GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_12);
+//	GPIO_ResetBits(GPIOC,GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_12);
  // USART_Configuration();
-//USART_NVIC_Config();
+
 	
-	Usart2_Init();
+	GPIO_SetBits(GPIOB,GPIO_Pin_15);
+	GPIO_ResetBits(GPIOB,GPIO_Pin_15);
+	GPIO_SetBits(GPIOB,GPIO_Pin_15);
+	GPIO_ResetBits(GPIOB,GPIO_Pin_15);
 	
+  Usart2_Init();
+	USART_NVIC_Config();
 	
 	Delay(100);
-	//GPIO_SetBits(GPIOA,GPIO_Pin_8); 
+	GPIO_SetBits(GPIOA,GPIO_Pin_8); 
 
 	GPIO_SetBits(GPIOA,GPIO_Pin_15); 	
+	Delay(3000);
+  USART_SendData(USART2,0x44);
+//	printf("FFFSDFSDFSDFSD");
 	Delay(100);
-  USART_SendData(USART2,6);
-	Delay(100);
-	while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET)
-  {}
+	GPIO_ResetBits(GPIOA,GPIO_Pin_8); 
+	GPIO_ResetBits(GPIOA,GPIO_Pin_15); 
 //	printf("***************************************************\r\n");
 	/* Infinite loop */
 	while (1)

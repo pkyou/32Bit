@@ -1,5 +1,7 @@
 #include "usart.h"
 #include "config.h"
+
+extern uint16_t data;
 #ifdef __GNUC__
   /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
      set to 'Yes') calls __io_putchar() */
@@ -34,20 +36,18 @@
   GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
 		
 		
-  GPIO_InitStructure.GPIO_Pin = GPIO_PinSource2;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
-		
-	GPIO_InitStructure.GPIO_Pin = GPIO_PinSource3;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;	/* 输出类型为推挽 */
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;	/* 内部上拉电阻使能 */
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;	/* 复用模式 */
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	/* 配置 USART Rx 为复用功能 */
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-		
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	USART_InitStructure.USART_BaudRate = 115200;
   USART_InitStructure.USART_WordLength = USART_WordLength_8b;
@@ -64,9 +64,11 @@
      Open_USARTx transmit data register is empty */
 		 
   //USART_ITConfig(USART2,USART_IT_RXNE,ENABLE);
-	
+	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);	/* 使能接收中断 */
 
   USART_Cmd(USART2, ENABLE);
+	
+  USART_ClearFlag(USART2, USART_FLAG_TC); 
 	}
 	
 void USART_Configuration(void)
@@ -146,10 +148,7 @@ void USART_Configuration(void)
   /* Enable the Open_USART Transmit interrupt: this interrupt is generated when the 
      Open_USARTx transmit data register is empty */
   USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
-	
-
   USART_Cmd(USART3, ENABLE);
-
 }
 
 void USART_NVIC_Config(void)
@@ -157,11 +156,10 @@ void USART_NVIC_Config(void)
   NVIC_InitTypeDef NVIC_InitStructure;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 
   /* Enable the USARTx Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = Open_USARTx_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+ 	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
 }
 
 /* Use no semihosting */
@@ -184,15 +182,41 @@ _sys_exit(int x)
   * @param  None
   * @retval None
   */
+
+void  Delay1(uint32_t nCount)
+{
+  for(; nCount != 0; nCount--);
+}
 PUTCHAR_PROTOTYPE
 {
   /* Place your implementation of fputc here */
   /* e.g. write a character to the USART */
-  USART_SendData(Open_USARTx, (uint8_t) ch);
+//  USART_SendData(USART2, (uint8_t) ch);
 
-  /* Loop until the end of transmission */
-  while (USART_GetFlagStatus(Open_USARTx, USART_FLAG_TC) == RESET)
-  {}
+//  /* Loop until the end of transmission */
+//  while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET)
+//  {}
 
-  return ch;
+//  return ch;
 }
+
+
+void USART2_IRQHandler(void)
+{
+	uint16_t ch=0;
+	uint16_t a=0;
+    //int i = 0; 
+	if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
+	{
+		     
+      ch = USART_ReceiveData(USART2);
+			Delay1(3000);
+		  data=ch+1;
+	}
+}	
+
+
+
+
+
+
